@@ -4,19 +4,18 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.team254.lib.drivers.TalonFXFactory;
 import com.team254.lib.drivers.TalonUtil;
-import com.team5419.frc2023.loops.ILooper;
-import com.team5419.frc2023.loops.Loop;
 import com.team254.lib.motion.MotionProfileConstraints;
 import com.team254.lib.motion.MotionState;
 import com.team254.lib.motion.SetpointGenerator;
 import com.team254.lib.util.ReflectingCSVWriter;
 import com.team254.lib.util.Util;
+import com.team5419.frc2023.loops.ILooper;
+import com.team5419.frc2023.loops.Loop;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import com.team5419.frc2023.subsystems.Subsystem;
 
 /**
- * Abstract base class for a subsystem with a single sensored servo-mechanism.
+ * Abstract base class for a subsystem with a single sensor servo-mechanism.
  */
 public abstract class ServoMotorSubsystem extends Subsystem {
     protected static final int kMotionProfileSlot = 0;
