@@ -31,13 +31,13 @@ deploy {
                     //Enter profile mode with ./gradlew deploy -PprofileMode
                     if (frc.project.hasProperty("profileMode")) {
                         project.logger.lifecycle('Debug mode enabled!')
-                        project.logger.lifecycle("Connect JMX client to 10.2.54.2:1099 for RoboRIO profiling with visualvm.")
+                        project.logger.lifecycle("Connect JMX client to 10.54.19.2:1099 for RoboRIO profiling with visualvm.")
                         jvmArgs.add("-Dcom.sun.management.jmxremote=true")
                         jvmArgs.add("-Dcom.sun.management.jmxremote.port=1099")
                         jvmArgs.add("-Dcom.sun.management.jmxremote.local.only=false")
                         jvmArgs.add("-Dcom.sun.management.jmxremote.ssl=false")
                         jvmArgs.add("-Dcom.sun.management.jmxremote.authenticate=false")
-                        jvmArgs.add("-Djava.rmi.server.hostname=10.2.54.2")
+                        jvmArgs.add("-Djava.rmi.server.hostname=10.54.19.2")
 
                     }
                 }
