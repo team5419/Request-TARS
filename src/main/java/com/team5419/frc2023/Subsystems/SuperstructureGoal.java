@@ -1,4 +1,4 @@
-package com.team5419.frc2023;
+package com.team5419.frc2023.subsystems;
 
 public class SuperstructureGoal {
 

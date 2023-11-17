@@ -8,29 +8,23 @@ import com.team5419.frc2023.loops.Loop;
 import com.team5419.lib.requests.Request;
 
 public class Wrist extends ServoMotorSubsystem {
-
     public static Wrist mInstance;
-
     public static Wrist getInstance() {
         if (mInstance == null) {
             mInstance = new Wrist(kWristConstnats);
         }
         return  mInstance;
     }
-
     public static final ServoMotorSubsystemConstants kWristConstnats = Constants.Wrist.kWristServoConstants;
-
     protected Wrist(ServoMotorSubsystemConstants constants) {
         super(constants);
         zeroSensors();
         setNeutralBrake(true);
     }
-
     private void setNeutralBrake(boolean isEnabled) {
         NeutralMode mode = isEnabled ? NeutralMode.Brake : NeutralMode.Coast;
         mMaster.setNeutralMode(mode);
     }
-
     @Override
     public void registerEnabledLoops(ILooper mEnabledLooper) {
         mEnabledLooper.register(new Loop() {
