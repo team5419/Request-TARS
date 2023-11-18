@@ -40,6 +40,10 @@ robot's arm code.
   the enabled loop. This class gets updated prior to the subsystem manager so the robot will respond with your inputs on
   the same loop.
 
+- [`com.team5419.frc2023.subsystems.ServoMotorSubsystem`](src/main/java/com/team5419/frc2023/subsystems/ServoMotorSubsystem.java)
+
+  Custom class that builds out functions needed to move most subsystems. Has error checking for parameters that are set. 
+
 ### Team 254 Code
 
 - [`com.team254.lib.drivers`](src/main/java/com/team254/lib/drivers)
