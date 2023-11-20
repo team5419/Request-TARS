@@ -1,75 +1,77 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package com.team5419.lib.requests;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A Request which itself takes a list of Requests and executes them in series.
+ */
 public class SequentialRequest extends Request {
+    private final List<Request> requests;
+    private Request currentRequest = null;
+    private boolean startedCurrentRequest = false;
 
-    List<Request> requests;
-    Request currentRequest = null;
-
-    /**
-     * Adds in a list of requests into the local requests list using variable arguments.
-     * @param reqs List of Request type arguments delineated by a comma. Can range from 0 - inf.
-     */
-    public SequentialRequest(Request... reqs) {
-        this.requests = new ArrayList<>();
-        for (Request req : reqs) {
-            this.requests.add(req);
-        }
+    public SequentialRequest(Request... requests) {
+        this(Arrays.asList(requests));
     }
 
-    /**
-     * Adds a list of requets into the local request list using a set Java list.
-     * @param reqs List of Request type arguments.
-     */
-    public SequentialRequest(List<Request> reqs) {
-        this.requests = new ArrayList<>();
-        for (Request req : reqs) {
-            this.requests.add(req);
+    public SequentialRequest(List<Request> requests) {
+        this.requests = new ArrayList<>(requests);
+    }
+
+    @Override
+    public void cleanup() {
+        if (currentRequest != null) {
+            currentRequest.cleanup();
+        }
+        requests.forEach(r -> r.cleanup());
+        super.cleanup();
+    }
+
+    private void startRequestIfAllowed() {
+        if (currentRequest.allowed()) {
+            currentRequest.act();
+            startedCurrentRequest = true;
         }
     }
 
     @Override
     public void act() {
         currentRequest = requests.remove(0);
-        currentRequest.act();        
+        startRequestIfAllowed();
     }
 
     @Override
-    public boolean isFinished() {
-        if (currentRequest == null) {
-            if (requests.isEmpty()) {
-                currentRequest = null;
-                return true;
-            } else {
-                currentRequest = requests.remove(0);
-                currentRequest.act();
-            }
+    public boolean isFinished(){
+        if (!startedCurrentRequest && currentRequest != null) {
+            startRequestIfAllowed();
         }
 
-        if (currentRequest.isFinished()) {
+        if (startedCurrentRequest && currentRequest.isFinished()) {
             if (requests.isEmpty()) {
                 currentRequest = null;
                 return true;
-            } else {
-                currentRequest = requests.remove(0);
-                currentRequest.act();
-            }
+            } 
+
+            currentRequest = requests.remove(0);
+            startedCurrentRequest = false;
+            startRequestIfAllowed();
         }
+
         return false;
     }
 
-    public int getListLength() {
-        return requests.size();
+    @Override
+    public String toString() {
+        return String.format("SequentialRequest(currentRequest = %s, startedCurrentRequest = %b, remainingRequests = %s)",
+                currentRequest, startedCurrentRequest, requests);
     }
-
-    public String getActiveRequest() {
-        if (currentRequest == null) {
-            return "null";
-        } else {
-            return currentRequest.toString();
-        }
-    }
-    
 }

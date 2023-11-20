@@ -1,46 +1,63 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package com.team5419.lib.requests;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A request type that runs all passed in requests at the same time.
+ * A Request which takes a list of Requests and executes them in parallel.
  */
 public class ParallelRequest extends Request {
+    private final List<Request> idleRequests;
+    private final List<Request> inProgressRequests;
 
-    List<Request> requests = new ArrayList<>();
-    
-    /**
-     * Adds any length of requests to the list of requests using variable args.
-     * @param requests Can be any amount of requests from 0 - inf. Requests can be passed in with a separation of commas.
-     */
-    public ParallelRequest(Request... reqs) {
-        for (Request request : reqs) {
-            this.requests.add(request);
-        }
+    public ParallelRequest(Request... requests) {
+        idleRequests = new LinkedList<>(Arrays.asList(requests));
+        inProgressRequests = new LinkedList<>();
     }
 
-    /**
-     * Appends a list of requests to the empty parallel request list.
-     * @param requests List of requests.
-     */
-    public ParallelRequest(List<Request> reqs) {
-        for (Request request : reqs) {
-            this.requests.add(request);
+    @Override
+    public void cleanup() {
+        inProgressRequests.forEach(r -> r.cleanup());
+        idleRequests.forEach(r -> r.cleanup());
+        super.cleanup();
+    }
+
+    private void startRequestsIfAllowed() {
+        for (Iterator<Request> iter = idleRequests.iterator(); iter.hasNext();) {
+            Request request = iter.next();
+            if (request.allowed()) {
+                request.act();
+                inProgressRequests.add(request);
+                iter.remove();
+            }
         }
     }
 
     @Override
     public void act() {
-        for (Request request : requests) {
-            request.act();
-        }        
+        startRequestsIfAllowed();
     }
 
     @Override
     public boolean isFinished() {
-        requests.removeIf((r) -> r.isFinished());
-        return requests.isEmpty();  
+        startRequestsIfAllowed();
+        inProgressRequests.removeIf(r -> r.isFinished());
+
+        return idleRequests.isEmpty() && inProgressRequests.isEmpty();
     }
-    
+
+    @Override
+    public String toString() {
+        return String.format("ParallelRequest(inProgressRequests = %s, idleRequests = %s)",
+                inProgressRequests, idleRequests);   
+    }
 }

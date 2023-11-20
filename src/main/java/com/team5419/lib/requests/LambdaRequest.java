@@ -1,27 +1,23 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package com.team5419.lib.requests;
 
 /**
- * A request that is able to call a method and run it without the need of building out the request infastructure
- * in the class. Helpful when testing out the functionality of subsystems.
+ * Add your docs here.
  */
-public class LambdaRequest extends Request {
+public class LambdaRequest extends Request{
 
-    /**
-     * Generates a method denoted by 'f' and is of the type void
-     */
     public interface VoidInterface {
         void f();
     }
 
-    /**
-     * Makes a variable that holds a method 'f'
-     */
     VoidInterface mF;
 
-    /**
-     * Setter for the vairable 'mF'
-     * @param f Any function that is of class void
-     */
     public LambdaRequest(VoidInterface f) {
         mF = f;
     }
@@ -32,8 +28,7 @@ public class LambdaRequest extends Request {
     }
 
     @Override
-    public boolean isFinished() {
-        return true;
+    public String toString() {
+        return "LambdaRequest()";
     }
-    
 }

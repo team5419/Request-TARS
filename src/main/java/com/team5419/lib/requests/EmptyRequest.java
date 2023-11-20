@@ -1,18 +1,20 @@
 package com.team5419.lib.requests;
 
-/**
- * Empty request that does not execute any functions and will always return finished as true.
- */
-public class EmptyRequest extends Request {
+public class EmptyRequest extends Request{
+	
+	@Override
+	public void act(){
+		// empty, as the name suggests
+	}
+	
+	@Override
+	public boolean isFinished(){
+		return true;
+	}
 
-    @Override
-    public void act() {
-        
-    }
-
-    @Override
-    public boolean isFinished() {
-        return true;
-    }
-    
+	@Override
+	public String toString() {
+		return "EmptyRequest()";
+	}
+	
 }

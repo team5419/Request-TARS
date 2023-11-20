@@ -61,6 +61,7 @@ public class Arm extends ServoMotorSubsystem {
             public boolean isFinished() {
                 return Util.epsilonEquals(mPeriodicIO.position_units, angle, Constants.Arm.kAngleTolerance);
             }
+
         };
     }
 

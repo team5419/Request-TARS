@@ -1,24 +1,22 @@
 package com.team5419.lib.requests;
 
-import edu.wpi.first.wpilibj.Timer;
+import com.team5419.lib.util.Stopwatch;
 
 public class WaitRequest extends Request {
+    private final double waitTimeSeconds;
+    private final Stopwatch stopwatch = new Stopwatch();
 
-    private double waitTime = 0.0;
-    private double startTime = 0.0;
-
-    public WaitRequest(double waitTime) {
-        this.waitTime = waitTime;
+    public WaitRequest(double waitTimeSeconds) {
+        this.waitTimeSeconds = waitTimeSeconds;
     }
 
     @Override
     public void act() {
-        startTime = Timer.getFPGATimestamp();
+        stopwatch.start();
     }
 
     @Override
     public boolean isFinished() {
-        return (Timer.getFPGATimestamp() - startTime) >= this.waitTime;
+        return stopwatch.getTime() > waitTimeSeconds;
     }
-    
 }
