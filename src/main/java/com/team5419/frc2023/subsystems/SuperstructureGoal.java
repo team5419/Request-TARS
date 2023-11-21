@@ -14,8 +14,8 @@ public class SuperstructureGoal {
         return mInstance;
     }
 
-    private double arm;
-    private double wrist;
+    private final double arm;
+    private final double wrist;
 
     public SuperstructureGoal(double arm, double wrist) {
         this.arm = arm;
@@ -34,10 +34,15 @@ public class SuperstructureGoal {
     }
 
     public static final SuperstructureGoal STOW = new SuperstructureGoal();
-
     public static final SuperstructureGoal GROUND_INTAKE_CUBE = new SuperstructureGoal(-15, 30);
-
+    public static final SuperstructureGoal GROUND_INTAKE_CONE = new SuperstructureGoal(-20, 20);
+    public static final SuperstructureGoal SHELF_INTAKE_CUBE = new SuperstructureGoal(-60, 45);
+    public static final SuperstructureGoal SHELF_INTAKE_CONE = new SuperstructureGoal(-75, 180);
+    public static final SuperstructureGoal SCORE_CUBE_L1 = new SuperstructureGoal(45, -45);
+    public static final SuperstructureGoal SCORE_CONE_L1 = new SuperstructureGoal(30, -60);
     public static final SuperstructureGoal SCORE_CUBE_L2 = new SuperstructureGoal(45, -30);
     public static final SuperstructureGoal SCORE_CONE_L2 = new SuperstructureGoal(60, -180);
+    public static final SuperstructureGoal SCORE_CUBE_L3 = new SuperstructureGoal(80, -20);
+    public static final SuperstructureGoal SCORE_CONE_L3 = new SuperstructureGoal(80, -210);
 
 }

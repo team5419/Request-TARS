@@ -28,6 +28,14 @@ public class Superstructure extends Subsystem {
         this.isCube = isCube;
     }
 
+    public boolean isGroundIntaking() {
+        return isGroundIntaking;
+    }
+
+    public void setGroundIntaking(boolean groundIntaking) {
+        isGroundIntaking = groundIntaking;
+    }
+
     public synchronized void request(Request r) {
         requestExecuter.request(r);
     }
@@ -39,7 +47,7 @@ public class Superstructure extends Subsystem {
     private final Loop loop = new Loop() {
         @Override
         public void onStart(double timestamp) {
-            stop();
+            neutralState();
         }
 
         @Override
@@ -75,6 +83,7 @@ public class Superstructure extends Subsystem {
     }
 
     private boolean isCube = false;
+    private boolean isGroundIntaking = true;
 
     public void neutralState() {
         request(new ParallelRequest(
@@ -98,13 +107,32 @@ public class Superstructure extends Subsystem {
     }
 
     public void groundIntakeState() {
-        SuperstructureGoal state = SuperstructureGoal.GROUND_INTAKE_CUBE;
+        SuperstructureGoal state = isCube ? SuperstructureGoal.GROUND_INTAKE_CUBE : SuperstructureGoal.GROUND_INTAKE_CONE;
         request(new SequentialRequest(
                 new ParallelRequest(
                         arm.angleRequest(state.getArm()),
                         wrist.angleRequest(state.getWrist())
                 ),
                 intake.stateRequest(Intake.State.INTAKE)
+        ));
+    }
+
+    public void shelfIntakeState() {
+        SuperstructureGoal state = isCube ? SuperstructureGoal.SHELF_INTAKE_CUBE : SuperstructureGoal.SHELF_INTAKE_CONE;
+        request(new SequentialRequest(
+                new ParallelRequest(
+                        arm.angleRequest(state.getArm()),
+                        wrist.angleRequest(state.getWrist())
+                ),
+                intake.stateRequest(Intake.State.INTAKE)
+        ));
+    }
+
+    public void scoreL1PoseState() {
+        SuperstructureGoal state = isCube ? SuperstructureGoal.SCORE_CUBE_L1 : SuperstructureGoal.SCORE_CONE_L1;
+        request(new ParallelRequest(
+                arm.angleRequest(state.getArm()),
+                wrist.angleRequest(state.getWrist())
         ));
     }
 
@@ -116,8 +144,18 @@ public class Superstructure extends Subsystem {
         ));
     }
 
+    public void scoreL3PoseState() {
+        SuperstructureGoal state = isCube ? SuperstructureGoal.SCORE_CUBE_L3 : SuperstructureGoal.SCORE_CONE_L3;
+        request(new ParallelRequest(
+                arm.angleRequest(state.getArm()),
+                wrist.angleRequest(state.getWrist())
+        ));
+    }
+
     @Override
     public void outputTelemetry() {
         SmartDashboard.putBoolean("Is Cube", isCube);
+        SmartDashboard.putBoolean("Is Ground Intaking", isGroundIntaking);
     }
+
 }

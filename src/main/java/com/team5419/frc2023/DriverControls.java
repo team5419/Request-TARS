@@ -22,9 +22,6 @@ public class DriverControls implements Loop {
 
     Xbox driver, operator;
 
-    private final Arm arm = Arm.getInstance();
-    private final Wrist wrist = Wrist.getInstance();
-    private final Intake intake = Intake.getInstance();
     private final Superstructure s = Superstructure.getInstance();
 
     private final SubsystemManager subsystems;
@@ -37,6 +34,9 @@ public class DriverControls implements Loop {
         driver.setDeadband(0.0);
         operator.setDeadband(0.6);
 
+        Arm arm = Arm.getInstance();
+        Wrist wrist = Wrist.getInstance();
+        Intake intake = Intake.getInstance();
         subsystems = new SubsystemManager(
                 Arrays.asList(s, arm, wrist, intake)
         );
@@ -60,16 +60,24 @@ public class DriverControls implements Loop {
     }
 
     private void twoControllerMode() {
-        if (operator.rightBumper.wasActivated()) {
+        if (operator.rightBumper.wasActivated() && !s.isGroundIntaking()) {
+            s.shelfIntakeState();
+        } else if (operator.rightBumper.wasActivated() && s.isGroundIntaking()) {
             s.groundIntakeState();
-        } else if (operator.bButton.wasActivated()) {
-            s.stowState();
-        } else if (operator.xButton.wasActivated()) {
-            s.scoreL2PoseState();
         } else if (operator.leftBumper.wasActivated()) {
             s.intake.setState(Intake.State.OUTTAKE);
+        } else if (operator.bButton.wasActivated()) {
+            s.stowState();
+        } else if (operator.aButton.wasActivated()) {
+            s.scoreL1PoseState();
+        } else if (operator.xButton.wasActivated()) {
+            s.scoreL2PoseState();
+        } else if (operator.yButton.wasActivated()) {
+            s.scoreL3PoseState();
         } else if (operator.POV0.wasActivated()) {
             s.setIsCube(!s.getIsCube());
+        } else if (operator.POV180.wasActivated()) {
+            s.setGroundIntaking(!s.isGroundIntaking());
         }
     }
 }
