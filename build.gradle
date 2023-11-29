@@ -2,6 +2,7 @@ plugins {
     id "java"
     id "idea"
     id "edu.wpi.first.GradleRIO" version "2023.4.3"
+    id 'com.diffplug.spotless' version '6.12.0'
 }
 
 def javaVersion = JavaVersion.VERSION_11
@@ -123,5 +124,65 @@ idea {
         downloadSources = true
         // Exclude the .vscode directory from indexing and search
         excludeDirs+=file(".vscode" )
+    }
+}
+
+// Configure Spotless code formatter
+spotless {
+    java {
+        ratchetFrom 'origin/main' // Limit to files changed by this feature branch
+
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**', 'venv/**'
+        }
+
+
+        toggleOffOn()
+        indentWithTabs()
+        googleJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+
+        formatAnnotations()
+
+        licenseHeader '/* $YEAR - Team 5419 Berkelium */'
+    }
+    groovyGradle {
+        target fileTree('.') {
+            include '**/*.gradle'
+            exclude '**/build/**', '**/build-*/**', 'venv/**'
+        }
+        greclipse()
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+    format 'xml', {
+        target fileTree('.') {
+            include '**/*.xml'
+            exclude '**/build/**', '**/build-*/**', 'venv/**'
+        }
+        eclipseWtp('xml')
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    format 'misc', {
+        target fileTree('.') {
+            include '**/*.md', '**/.gitignore'
+            exclude '**/build/**', '**/build-*/**', 'venv/**'
+        }
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+    python {
+        target fileTree('.') {
+            include '**/*.py'
+            exclude '**/build/**', '**/build-*/**', 'venv/**'
+        }
+        black("22.12.0")
     }
 }

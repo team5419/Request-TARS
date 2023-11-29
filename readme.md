@@ -42,7 +42,7 @@ robot's arm code.
 
 - [`com.team5419.frc2023.subsystems.ServoMotorSubsystem`](src/main/java/com/team5419/frc2023/subsystems/ServoMotorSubsystem.java)
 
-  Custom class that builds out functions needed to move most subsystems. Has error checking for parameters that are set. 
+  Custom class that builds out functions needed to move most subsystems. Has error checking for parameters that are set.
 
 ### Team 254 Code
 
