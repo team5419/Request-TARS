@@ -3,8 +3,7 @@ package com.team5419.frc2023.loops;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import com.team5419.frc2023.Constants;
+import com.team5419.frc2023.constants.Constants;
 import com.team5419.lib.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
