@@ -109,4 +109,11 @@ public class TunerConstants {
             kBackLeftSteerMotorId, kBackLeftDriveMotorId, kBackLeftEncoderId, kBackLeftEncoderOffset, Units.inchesToMeters(kBackLeftXPosInches), Units.inchesToMeters(kBackLeftYPosInches), kInvertLeftSide);
     public static final SwerveModuleConstants BackRight = ConstantCreator.createModuleConstants(
             kBackRightSteerMotorId, kBackRightDriveMotorId, kBackRightEncoderId, kBackRightEncoderOffset, Units.inchesToMeters(kBackRightXPosInches), Units.inchesToMeters(kBackRightYPosInches), kInvertRightSide);
+
+
+    // --------------------------------------------------------------------------------
+    // ------------------------------ END GENERATED CODE ------------------------------
+
+    public static double kMaxSpeed = 6; // m/s
+    public static double kMaxAngularRate = Math.PI * 3; // rad / s
 }
