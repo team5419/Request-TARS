@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import static com.team254.lib.motion.MotionUtil.kEpsilon;
 import static com.team254.lib.util.Util.epsilonEquals;
 
 /**
@@ -71,10 +72,10 @@ public class MotionProfile {
      * @return Empty if the time is outside the time bounds of the profile, or the resulting MotionState otherwise.
      */
     public Optional<MotionState> stateByTime(double t) {
-        if (t < startTime() && t + MotionUtil.kEpsilon >= startTime()) {
+        if (t < startTime() && t + kEpsilon >= startTime()) {
             return Optional.of(startState());
         }
-        if (t > endTime() && t - MotionUtil.kEpsilon <= endTime()) {
+        if (t > endTime() && t - kEpsilon <= endTime()) {
             return Optional.of(endState());
         }
         for (MotionSegment s : mSegments) {
@@ -117,7 +118,7 @@ public class MotionProfile {
     public Optional<MotionState> firstStateByPos(double pos) {
         for (MotionSegment s : mSegments) {
             if (s.containsPos(pos)) {
-                if (epsilonEquals(s.end().pos(), pos, MotionUtil.kEpsilon)) {
+                if (epsilonEquals(s.end().pos(), pos, kEpsilon)) {
                     return Optional.of(s.end());
                 }
                 final double t = Math.min(s.start().nextTimeAtPos(pos), s.end().t());

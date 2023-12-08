@@ -1,8 +1,8 @@
 // package com.team5419.frc2023.subsystems;
 
-// import com.ctre.phoenix.motorcontrol.NeutralMode;
+// import com.ctre.phoenix6.signals.NeutralModeValue;
 // import com.team254.lib.util.Util;
-// import com.team5419.frc2023.Constants;
+// import com.team5419.frc2023.constants.*;
 // import com.team5419.frc2023.loops.ILooper;
 // import com.team5419.frc2023.loops.Loop;
 // import com.team5419.lib.requests.Request;
@@ -25,7 +25,7 @@
 //     }
 
 //     private void setNeutralBrake(boolean isEnabled) {
-//         NeutralMode mode = isEnabled ? NeutralMode.Brake : NeutralMode.Coast;
+//         NeutralModeValue mode = isEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 //         mMaster.setNeutralMode(mode);
 //     }
 
