@@ -153,7 +153,7 @@
 //     }
 
 //     @Override
-//     public void outputTelemetry() {
+//     public void outputTelemetry(boolean disabled) {
 //         SmartDashboard.putBoolean("Is Cube", isCube);
 //         SmartDashboard.putBoolean("Is Ground Intaking", isGroundIntaking);
 //     }

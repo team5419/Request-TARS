@@ -2,10 +2,6 @@ package com.team5419.frc2023;
 
 import com.team5419.frc2023.loops.Loop;
 import com.team5419.frc2023.subsystems.Drive;
-// import com.team5419.frc2023.subsystems.Arm;
-// import com.team5419.frc2023.subsystems.Intake;
-// import com.team5419.frc2023.subsystems.Superstructure;
-// import com.team5419.frc2023.subsystems.Wrist;
 import com.team5419.lib.io.Xbox;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -25,7 +21,7 @@ public class DriverControls implements Loop {
 
     Xbox driver, operator;
 
-    // private final Superstructure supe = Superstructure.getInstance();
+    // private final Superstructure ss = Superstructure.getInstance();
 
     private final SubsystemManager subsystems;
     public SubsystemManager getSubsystems() {return subsystems;}
@@ -43,11 +39,8 @@ public class DriverControls implements Loop {
         // Intake intake = Intake.getInstance();
         swerve = Drive.getInstance();
 
-        // subsystems = new SubsystemManager(
-        //         Arrays.asList(s, arm, wrist, intake)
-        // );
         subsystems = new SubsystemManager(Arrays.asList(
-            swerve
+            swerve//, ss, arm, wrist, intake
         ));
     }
 
@@ -88,24 +81,24 @@ public class DriverControls implements Loop {
     }
 
     // private void twoControllerMode() {
-    //     if (operator.rightBumper.wasActivated() && !s.isGroundIntaking()) {
-    //         s.shelfIntakeState();
-    //     } else if (operator.rightBumper.wasActivated() && s.isGroundIntaking()) {
-    //         s.groundIntakeState();
+    //     if (operator.rightBumper.wasActivated() && !ss.isGroundIntaking()) {
+    //         ss.shelfIntakeState();
+    //     } else if (operator.rightBumper.wasActivated() && ss.isGroundIntaking()) {
+    //         ss.groundIntakeState();
     //     } else if (operator.leftBumper.wasActivated()) {
-    //         s.intake.setState(Intake.State.OUTTAKE);
+    //         ss.intake.setState(Intake.State.OUTTAKE);
     //     } else if (operator.bButton.wasActivated()) {
-    //         s.stowState();
+    //         ss.stowState();
     //     } else if (operator.aButton.wasActivated()) {
-    //         s.scoreL1PoseState();
+    //         ss.scoreL1PoseState();
     //     } else if (operator.xButton.wasActivated()) {
-    //         s.scoreL2PoseState();
+    //         ss.scoreL2PoseState();
     //     } else if (operator.yButton.wasActivated()) {
-    //         s.scoreL3PoseState();
+    //         ss.scoreL3PoseState();
     //     } else if (operator.POV0.wasActivated()) {
-    //         s.setIsCube(!s.getIsCube());
+    //         ss.setIsCube(!ss.getIsCube());
     //     } else if (operator.POV180.wasActivated()) {
-    //         s.setGroundIntaking(!s.isGroundIntaking());
+    //         ss.setGroundIntaking(!ss.isGroundIntaking());
     //     }
     // }
 }

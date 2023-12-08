@@ -22,7 +22,6 @@
 //     protected final TalonFX motor = new TalonFX(Ports.kIntake);
 
 //     public Intake() {
-
 //     }
 
 //     public enum State {
@@ -89,7 +88,7 @@
 //         };
 //     }
 
-//     public static PeriodicIO mPeriodicIO;
+//     public static PeriodicIO mPeriodicIO = new PeriodicIO();
 //     public static class PeriodicIO {
 //         // Inputs
 //         private double timestamp;
@@ -113,7 +112,7 @@
 //     }
 
 //     @Override
-//     public void outputTelemetry() {
+//     public void outputTelemetry(boolean disabled) {
 //         SmartDashboard.putNumber("Intake Demand", mPeriodicIO.demand);
 //         SmartDashboard.putNumber("Intake Supplied Volts", mPeriodicIO.voltage);
 //         SmartDashboard.putNumber("Intake Current", mPeriodicIO.current);

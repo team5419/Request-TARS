@@ -25,8 +25,7 @@
 //     }
 
 //     private void setNeutralBrake(boolean isEnabled) {
-//         NeutralModeValue mode = isEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-//         mMaster.setNeutralMode(mode);
+//         setNeutralMode(isEnabled ? NeutralModeValue.Brake : NeutralModeValue.Coast);
 //     }
 
 //     @Override

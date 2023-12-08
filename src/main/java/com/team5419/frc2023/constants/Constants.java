@@ -21,9 +21,9 @@ public class Constants {
             kArmServoConstants.kMasterConstants.counterClockwisePositive = false;
             kArmServoConstants.kMasterConstants.invert_sensor_phase = false;
 
-            kArmServoConstants.kHomePosition = -9.598;
-            kArmServoConstants.kMinUnitsLimit = -9.598;
-            kArmServoConstants.kMaxUnitsLimit = 113.706;
+            kArmServoConstants.kHomePosition = 0;
+            kArmServoConstants.kMinUnitsLimit = -80;
+            kArmServoConstants.kMaxUnitsLimit = 80;
 
             // kArmServoConstants.kTicksPerUnitDistance = (2048.0 / 360.0) * 240.0; //encoder ticks per rev * gear ratio
             kArmServoConstants.kRotationsPerUnitDistance = 240.0; 
@@ -66,9 +66,9 @@ public class Constants {
             kWristServoConstants.kMasterConstants.counterClockwisePositive = false;
             kWristServoConstants.kMasterConstants.invert_sensor_phase = false;
 
-            kWristServoConstants.kHomePosition = -9.598;
-            kWristServoConstants.kMinUnitsLimit = -9.598;
-            kWristServoConstants.kMaxUnitsLimit = 113.706;
+            kWristServoConstants.kHomePosition = 0;
+            kWristServoConstants.kMinUnitsLimit = -215;
+            kWristServoConstants.kMaxUnitsLimit = 215;
 
             // kWristServoConstants.kTicksPerUnitDistance = (2048.0 / 360.0) * 40.0; //encoder ticks per rev * gear ratio
             kWristServoConstants.kRotationsPerUnitDistance = 40.0;
