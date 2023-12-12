@@ -1,7 +1,11 @@
 package com.team5419.frc2023;
 
 import com.team5419.frc2023.loops.Loop;
+import com.team5419.frc2023.subsystems.Arm;
 import com.team5419.frc2023.subsystems.Drive;
+import com.team5419.frc2023.subsystems.Intake;
+import com.team5419.frc2023.subsystems.Superstructure;
+import com.team5419.frc2023.subsystems.Wrist;
 import com.team5419.lib.io.Xbox;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,7 +25,7 @@ public class DriverControls implements Loop {
 
     Xbox driver, operator;
 
-    // private final Superstructure ss = Superstructure.getInstance();
+    private final Superstructure ss = Superstructure.getInstance();
 
     private final SubsystemManager subsystems;
     public SubsystemManager getSubsystems() {return subsystems;}
@@ -34,13 +38,13 @@ public class DriverControls implements Loop {
         driver.setDeadband(0.15);
         operator.setDeadband(0.6);
 
-        // Arm arm = Arm.getInstance();
-        // Wrist wrist = Wrist.getInstance();
-        // Intake intake = Intake.getInstance();
+        Arm arm = Arm.getInstance();
+        Wrist wrist = Wrist.getInstance();
+        Intake intake = Intake.getInstance();
         swerve = Drive.getInstance();
 
         subsystems = new SubsystemManager(Arrays.asList(
-            swerve//, ss, arm, wrist, intake
+            swerve, ss, arm, wrist, intake
         ));
     }
 
@@ -54,7 +58,7 @@ public class DriverControls implements Loop {
         driver.update();
         operator.update();
         handleDrive();
-        // twoControllerMode();
+        twoControllerMode();
     }
 
     @Override
@@ -80,25 +84,25 @@ public class DriverControls implements Loop {
         }
     }
 
-    // private void twoControllerMode() {
-    //     if (operator.rightBumper.wasActivated() && !ss.isGroundIntaking()) {
-    //         ss.shelfIntakeState();
-    //     } else if (operator.rightBumper.wasActivated() && ss.isGroundIntaking()) {
-    //         ss.groundIntakeState();
-    //     } else if (operator.leftBumper.wasActivated()) {
-    //         ss.intake.setState(Intake.State.OUTTAKE);
-    //     } else if (operator.bButton.wasActivated()) {
-    //         ss.stowState();
-    //     } else if (operator.aButton.wasActivated()) {
-    //         ss.scoreL1PoseState();
-    //     } else if (operator.xButton.wasActivated()) {
-    //         ss.scoreL2PoseState();
-    //     } else if (operator.yButton.wasActivated()) {
-    //         ss.scoreL3PoseState();
-    //     } else if (operator.POV0.wasActivated()) {
-    //         ss.setIsCube(!ss.getIsCube());
-    //     } else if (operator.POV180.wasActivated()) {
-    //         ss.setGroundIntaking(!ss.isGroundIntaking());
-    //     }
-    // }
+    private void twoControllerMode() {
+        if (operator.rightBumper.wasActivated() && !ss.isGroundIntaking()) {
+            ss.shelfIntakeState();
+        } else if (operator.rightBumper.wasActivated() && ss.isGroundIntaking()) {
+            ss.groundIntakeState();
+        } else if (operator.leftBumper.wasActivated()) {
+            ss.intake.setState(Intake.State.OUTTAKE);
+        } else if (operator.bButton.wasActivated()) {
+            ss.stowState();
+        } else if (operator.aButton.wasActivated()) {
+            ss.scoreL1PoseState();
+        } else if (operator.xButton.wasActivated()) {
+            ss.scoreL2PoseState();
+        } else if (operator.yButton.wasActivated()) {
+            ss.scoreL3PoseState();
+        } else if (operator.POV0.wasActivated()) {
+            ss.setIsCube(!ss.getIsCube());
+        } else if (operator.POV180.wasActivated()) {
+            ss.setGroundIntaking(!ss.isGroundIntaking());
+        }
+    }
 }

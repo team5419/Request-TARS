@@ -385,10 +385,10 @@ public abstract class ServoMotorSubsystem extends Subsystem {
                     System.out.println(mConstants.kName + ": Master Talon reset occurred; resetting frame rates.");
                     TalonUtil.checkErrorAndRetry(() -> mMasterPositionSignal.setUpdateFrequency(200, 0.05));
                     TalonUtil.checkErrorAndRetry(() -> mMasterVelocitySignal.setUpdateFrequency(200, 0.05));
-                    TalonUtil.checkErrorAndRetry(() -> mMasterClosedLoopError.setUpdateFrequency(200, 0.05));
-                    TalonUtil.checkErrorAndRetry(() -> mMasterStatorCurrentSignal.setUpdateFrequency(200, 0.05));
-                    TalonUtil.checkErrorAndRetry(() -> mMasterOutputVoltageSignal.setUpdateFrequency(200, 0.05));
-                    TalonUtil.checkErrorAndRetry(() -> mMasterOutputPercentageSignal.setUpdateFrequency(200, 0.05));
+                    TalonUtil.checkErrorAndRetry(() -> mMasterClosedLoopError.setUpdateFrequency(100, 0.05));
+                    TalonUtil.checkErrorAndRetry(() -> mMasterStatorCurrentSignal.setUpdateFrequency(100, 0.05));
+                    TalonUtil.checkErrorAndRetry(() -> mMasterOutputVoltageSignal.setUpdateFrequency(100, 0.05));
+                    TalonUtil.checkErrorAndRetry(() -> mMasterOutputPercentageSignal.setUpdateFrequency(100, 0.05));
 
                     resetIfAtHome();
                 }
