@@ -54,6 +54,7 @@ public class Wrist extends ServoMotorSubsystem {
             @Override
             public void act() {
                 // setSetpointMotionMagic(angle);
+                //! Disabled for now, as we dont have any insurance that the bot wont run into itself
             }
 
             @Override
