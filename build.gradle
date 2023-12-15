@@ -127,7 +127,7 @@ idea {
     }
 }
 
-// Configure Spotless code formatter
+// // Configure Spotless code formatter
 // spotless {
 //     java {
 //         ratchetFrom 'origin/main' // Limit to files changed by this feature branch

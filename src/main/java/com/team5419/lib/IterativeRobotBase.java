@@ -4,8 +4,6 @@
 
 package com.team5419.lib;
 
-import java.util.ConcurrentModificationException;
-
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -16,6 +14,7 @@ import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.ConcurrentModificationException;
 
 /**
  * IterativeRobotBase implements a specific type of robot program framework, extending the RobotBase
@@ -258,7 +257,7 @@ public abstract class IterativeRobotBase extends RobotBase {
    * @throws ConcurrentModificationException if this is called during test mode.
    */
   public void enableLiveWindowInTest(boolean testLW) {
-    if (isTest()) {
+    if (isTestEnabled()) {
       throw new ConcurrentModificationException("Can't configure test mode while in test mode!");
     }
     m_lwEnabledInTest = testLW;

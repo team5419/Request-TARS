@@ -4,6 +4,10 @@ import com.team254.lib.drivers.CanDeviceId;
 import com.team5419.frc2023.Ports;
 import com.team5419.frc2023.subsystems.ServoMotorSubsystem.ServoMotorSubsystemConstants;
 
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.constraint.CentripetalAccelerationConstraint;
+
 // import static com.team5419.frc2023.subsystems.ServoMotorSubsystem.ServoMotorSubsystemConstants;
 
 public class Constants {
@@ -100,5 +104,39 @@ public class Constants {
         public static final double kAngleTolerance = 3.0;
 
     }
+
+    public static final class AutoConstants {
+        public static final double kPXController = 6.7;
+        public static final double kPYController = 6.7;
+
+        public static final double kDXController = 0.0;
+        public static final double kDYController = 0.0;
+
+        public static final double kPThetaController = 2.0;
+
+        // Constraint for the motion profilied robot angle controller (Radians)
+        public static final double kMaxAngularSpeed = 2.0 * Math.PI; 
+        public static final double kMaxAngularAccel = 2.0 * Math.PI * kMaxAngularSpeed;
+
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+                        kMaxAngularSpeed, kMaxAngularAccel);
+
+        // Static factory for creating trajectory configs
+        public static TrajectoryConfig createConfig(double maxSpeed, double maxAccel, double startSpeed, double endSpeed) {
+                TrajectoryConfig config = new TrajectoryConfig(maxSpeed, maxAccel);
+                config.setStartVelocity(startSpeed);
+                config.setEndVelocity(endSpeed);
+                config.addConstraint(new CentripetalAccelerationConstraint(10.0));
+                return config;
+        }
+    }
+
+    public static final class SnapConstants {
+        public static final double kP = 6.0;
+        public static final double kI = 0.5;
+        public static final double kD = 0.2;
+        public static final double snapTimeout = 0.25;
+        public static final double snapEpsilon = 1.0;
+}
 
 }

@@ -3,16 +3,20 @@ package com.team5419.frc2023.subsystems;
 import java.util.function.Supplier;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
+import com.team5419.frc2023.Robot;
 import com.team5419.frc2023.constants.Constants;
 import com.team5419.frc2023.constants.TunerConstants;
 import com.team5419.frc2023.loops.ILooper;
 import com.team5419.frc2023.loops.Loop;
+import com.team5419.lib.swerve.DriveMotionPlanner;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 
 public class Drive extends Subsystem {
     public enum DriveControlState {
@@ -37,6 +41,9 @@ public class Drive extends Subsystem {
     public Rotation2d forceOrientSetpoint;
     private boolean hasExitedFacing = false;
 
+    private boolean hasOdometryReset = false;
+    private final DriveMotionPlanner mMotionPlanner;
+
     public static Drive getInstance() {
         if (sInstance == null) {
             sInstance = new Drive();
@@ -50,6 +57,8 @@ public class Drive extends Subsystem {
         PhoenixPIDController headingController = facingAngle.HeadingController;
         headingController.setPID(4, 0, 0);
         headingController.setTolerance(Math.PI / 16, 0.5);
+
+        mMotionPlanner = new DriveMotionPlanner();
     }
 
     @Override
@@ -153,11 +162,22 @@ public class Drive extends Subsystem {
         hasExitedFacing = false;
     }
 
+    public void setTrajectory(Trajectory traj, Rotation2d heading) {
+        if(mMotionPlanner != null) {
+            mMotionPlanner.setTrajectory(traj, heading, getPose());
+            mControlState = DriveControlState.PATH_FOLLOWING;
+        }
+    }
+
+    public boolean isDoneWithTrajectory() {
+        return mControlState != DriveControlState.PATH_FOLLOWING ? false : mMotionPlanner.isFinished();
+    }
+
     public synchronized void lockPose() {
         mDesiredRequest = stop;
     }
 
-    public void zeroGyro(Translation2d translation, Rotation2d rotation) {
+    private void zeroGyro(Translation2d translation, Rotation2d rotation) {
         swerve.seedFieldRelative(new Pose2d(translation, rotation));
     }
 
@@ -167,6 +187,24 @@ public class Drive extends Subsystem {
 
     public void zeroGyro() {
         swerve.seedFieldRelative();
+    }
+
+    public void resetOdometry(Pose2d pose) {
+        hasOdometryReset = true;
+        Pose2d wanted_pose = pose;
+        Rotation2d wantedRotationReset = pose.getRotation();
+        if (Robot.flip_trajectories) {
+            wantedRotationReset.rotateBy(Rotation2d.fromDegrees(180));
+        }
+        zeroGyro(wanted_pose.getTranslation(), wantedRotationReset);
+    }
+
+    public Pose2d getPose() {
+        return swerve.getState().Pose;
+    }
+
+    public boolean readyForAuto() {
+        return hasOdometryReset;
     }
 
     private void updatePathFollower() {
