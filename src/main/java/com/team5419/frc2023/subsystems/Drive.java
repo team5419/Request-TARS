@@ -119,6 +119,7 @@ public class Drive extends Subsystem {
      */
     public void feedTeleopSetpoints(Supplier<Double> x, Supplier<Double> y, Supplier<Double> rotation, Supplier<Boolean> slowMode) {
         if(mControlState != DriveControlState.OPEN_LOOP && mControlState != DriveControlState.FORCE_ORIENT && !DriverStation.isAutonomous()) {
+            //Todo: might want to move the isAutonomous part to the driver controls section
             mControlState = DriveControlState.OPEN_LOOP;
         }
 
