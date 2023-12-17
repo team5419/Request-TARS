@@ -29,7 +29,9 @@ public class SwerveTrajectoryAction implements Action {
     }
 
     @Override
-    public void update() {}
+    public void update() {
+        // System.out.println("In traj: " + mTrajectory.toString());
+    }
 
     @Override
     public boolean isFinished() {

@@ -11,7 +11,6 @@ public class AutoModeExecutor {
     private Thread m_thread = null;
 
     public void setAutoMode(AutoModeBase new_auto_mode) {
-        System.out.println("AUTO MODE SET");
         m_auto_mode = new_auto_mode;
     }
 
@@ -29,11 +28,7 @@ public class AutoModeExecutor {
             });
 
             m_thread.start();
-        } else {
-            System.out.println("THREAD ALREADY THERE");
-            System.out.println("THREAD STATE: " + m_thread.getState().name());
         }
-
     }
 
     public void stop() {

@@ -90,6 +90,7 @@ public class Robot extends TimedRobot
         looper.onAutoLoop(Timer.getFPGATimestamp());
     }
 
+    @Override
     public void autonomousExit() {
         if(!Drive.getInstance().isDoneWithTrajectory()) {
             mAutoModeExecutor.stop();
@@ -106,6 +107,32 @@ public class Robot extends TimedRobot
     @Override
     public void teleopPeriodic() {
         looper.onTeleopLoop(Timer.getFPGATimestamp());
+    }
+    
+    
+    /** This method is called once when the robot is disabled. */
+    @Override
+    public void disabledInit() {
+        looper.startDisabled(Timer.getFPGATimestamp());
+
+        CrashTracker.logDisabledInit();
+
+        if (mAutoModeExecutor != null) {
+			mAutoModeExecutor.stop();
+		}
+
+		// Reset all auto mode state.
+		mAutoModeSelector.reset();
+		mAutoModeSelector.updateModeCreator(false);
+		mAutoModeExecutor = new AutoModeExecutor();
+    }
+    
+    
+    /** This method is called periodically when disabled. */
+    @Override
+    public void disabledPeriodic() {
+        looper.onDisabledLoop(Timer.getFPGATimestamp());
+
         try {
             boolean alliance_changed = false;
             if (DriverStation.isDSAttached()) {
@@ -130,7 +157,7 @@ public class Robot extends TimedRobot
 
             flip_trajectories = is_red_alliance;
 
-            mAutoModeSelector.updateModeCreator(true);
+            mAutoModeSelector.updateModeCreator(alliance_changed);
             Optional<AutoModeBase> autoMode = mAutoModeSelector.getAutoMode();
             if (autoMode.isPresent()) {
                 mAutoModeExecutor.setAutoMode(autoMode.get());
@@ -140,29 +167,6 @@ public class Robot extends TimedRobot
 			CrashTracker.logThrowableCrash(t);
 			throw t;
 		}
-    }
-    
-    
-    /** This method is called once when the robot is disabled. */
-    @Override
-    public void disabledInit() {
-        looper.startDisabled(Timer.getFPGATimestamp());
-
-        if (mAutoModeExecutor != null) {
-			mAutoModeExecutor.stop();
-		}
-
-		// Reset all auto mode state.
-		mAutoModeSelector.reset();
-		mAutoModeSelector.updateModeCreator(false);
-		mAutoModeExecutor = new AutoModeExecutor();
-    }
-    
-    
-    /** This method is called periodically when disabled. */
-    @Override
-    public void disabledPeriodic() {
-        looper.onDisabledLoop(Timer.getFPGATimestamp());
     }
 
 }

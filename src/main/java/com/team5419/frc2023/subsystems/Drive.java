@@ -6,6 +6,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
+import com.fasterxml.jackson.annotation.OptBoolean;
 import com.team5419.frc2023.Robot;
 import com.team5419.frc2023.constants.Constants;
 import com.team5419.frc2023.constants.TunerConstants;
@@ -16,7 +17,10 @@ import com.team5419.lib.swerve.DriveMotionPlanner;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 
 public class Drive extends Subsystem {
     public enum DriveControlState {
@@ -34,6 +38,7 @@ public class Drive extends Subsystem {
     SwerveRequest.SwerveDriveBrake stop = new SwerveRequest.SwerveDriveBrake();
     SwerveRequest.PointWheelsAt pointModsForward = new SwerveRequest.PointWheelsAt().withModuleDirection(Rotation2d.fromDegrees(0));
     SwerveRequest.FieldCentricFacingAngle facingAngle = new SwerveRequest.FieldCentricFacingAngle().withIsOpenLoop(true);
+    SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric().withIsOpenLoop(true);
     // Telemetry logger = new Telemetry(MaxSpeed);
 
     private static Drive sInstance;
@@ -59,6 +64,7 @@ public class Drive extends Subsystem {
         headingController.setTolerance(Math.PI / 16, 0.5);
 
         mMotionPlanner = new DriveMotionPlanner();
+        mControlState = DriveControlState.OPEN_LOOP;
     }
 
     @Override
@@ -88,13 +94,10 @@ public class Drive extends Subsystem {
                                 mControlState = DriveControlState.OPEN_LOOP;
                             }
                             break;
-                        
                         default:
                             stop();
                             break;
                     }
-
-
                     swerve.setControl(mDesiredRequest);
                 }
             }
@@ -115,7 +118,7 @@ public class Drive extends Subsystem {
      * @apiNote Values not checked, could exceed set max speed
      */
     public void feedTeleopSetpoints(Supplier<Double> x, Supplier<Double> y, Supplier<Double> rotation, Supplier<Boolean> slowMode) {
-        if(mControlState != DriveControlState.OPEN_LOOP && mControlState != DriveControlState.FORCE_ORIENT) {
+        if(mControlState != DriveControlState.OPEN_LOOP && mControlState != DriveControlState.FORCE_ORIENT && !DriverStation.isAutonomous()) {
             mControlState = DriveControlState.OPEN_LOOP;
         }
 
@@ -139,7 +142,7 @@ public class Drive extends Subsystem {
     }
 
     public void applyOpenLoop(Supplier<Double> x, Supplier<Double> y, Supplier<Double> rotation, Supplier<Boolean> slowMode) {
-        if(mControlState != DriveControlState.OPEN_LOOP) {
+        if(mControlState != DriveControlState.OPEN_LOOP && !DriverStation.isAutonomous()) {
             mControlState = DriveControlState.OPEN_LOOP;
         }
 
@@ -166,6 +169,7 @@ public class Drive extends Subsystem {
         if(mMotionPlanner != null) {
             mMotionPlanner.setTrajectory(traj, heading, getPose());
             mControlState = DriveControlState.PATH_FOLLOWING;
+            System.err.println("TRAJ SET");
         }
     }
 
@@ -208,7 +212,12 @@ public class Drive extends Subsystem {
     }
 
     private void updatePathFollower() {
-        // TODO - probably with pathplanner
+        if (mControlState == DriveControlState.PATH_FOLLOWING) {
+            final double now = Timer.getFPGATimestamp();
+            ChassisSpeeds output = mMotionPlanner.update(getPose(), now);
+            robotCentric.withVelocityX(output.vxMetersPerSecond).withVelocityY(output.vyMetersPerSecond).withRotationalRate(output.omegaRadiansPerSecond);
+            mDesiredRequest = robotCentric;
+        }
     }
 
     // @Override

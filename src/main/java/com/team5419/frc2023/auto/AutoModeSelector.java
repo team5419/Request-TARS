@@ -39,14 +39,11 @@ public class AutoModeSelector {
 
     private Optional<AutoModeBase> getAutoModeForParams(DesiredMode mode) {
 
-        System.out.println("POLLED FOR AUTO");
-
         switch (mode) {
             case DO_NOTHING:
                 return Optional.of(new DoNothingMode());
             
             case TEST_PATH_AUTO:
-                System.out.println("POLLING TestPath");
                 return Optional.of(new TestPathMode());
         
             // case ONE_BALANCE:

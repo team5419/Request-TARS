@@ -44,8 +44,8 @@ public class TestPathMode extends AutoModeBase{
     @Override
     protected void routine() throws AutoModeEndedException {
 
-
-        // runAction(new LambdaAction(() -> Drive.getInstance().resetOdometry(getStartingPose())));
+        System.out.println("Zeroing Pose");
+        runAction(new LambdaAction(() -> Drive.getInstance().resetOdometry(getStartingPose())));
 
         System.out.println("Running test path");
         runAction(new ParallelAction(List.of(
