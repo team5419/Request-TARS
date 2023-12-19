@@ -49,9 +49,9 @@ public class SubsystemManager extends Subsystem implements ILooper, Loop {
     }
 
     @Override
-    public void outputTelemetry() {
-        super.outputTelemetry();
-        mAllSubsystems.forEach(Subsystem::outputTelemetry);
+    public void outputTelemetry(boolean disabled) {
+        super.outputTelemetry(disabled);
+        mAllSubsystems.forEach(s -> s.outputTelemetry(disabled));
     }
 
     @Override

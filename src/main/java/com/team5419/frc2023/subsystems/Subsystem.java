@@ -30,13 +30,14 @@ public abstract class Subsystem {
     public void zeroSensors() {
     }
 
-    public void outputTelemetry() {
+    public void outputTelemetry(boolean disabled) {
     }
 
     public void registerEnabledLoops(ILooper enabledLooper) {
     }
 
     public boolean checkSystem() { return false; }
+
 
     public boolean hasEmergency = false;
 }

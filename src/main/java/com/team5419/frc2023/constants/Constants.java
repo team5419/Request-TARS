@@ -1,6 +1,10 @@
-package com.team5419.frc2023;
+package com.team5419.frc2023.constants;
 
-import static com.team5419.frc2023.subsystems.ServoMotorSubsystem.ServoMotorSubsystemConstants;
+import com.team254.lib.drivers.CanDeviceId;
+import com.team5419.frc2023.Ports;
+import com.team5419.frc2023.subsystems.ServoMotorSubsystem.ServoMotorSubsystemConstants;
+
+// import static com.team5419.frc2023.subsystems.ServoMotorSubsystem.ServoMotorSubsystemConstants;
 
 public class Constants {
 
@@ -13,30 +17,27 @@ public class Constants {
         static {
             kArmServoConstants.kName = "Arm";
 
-            kArmServoConstants.kMasterConstants.id = Ports.kArm;
-            kArmServoConstants.kMasterConstants.invert_motor = false;
+            kArmServoConstants.kMasterConstants.id = new CanDeviceId(Ports.kArm);
+            kArmServoConstants.kMasterConstants.counterClockwisePositive = false;
             kArmServoConstants.kMasterConstants.invert_sensor_phase = false;
 
             kArmServoConstants.kHomePosition = -9.598;
             kArmServoConstants.kMinUnitsLimit = -9.598;
             kArmServoConstants.kMaxUnitsLimit = 113.706;
 
-            kArmServoConstants.kTicksPerUnitDistance = (2048.0 / 360.0) * 240.0; //encoder ticks per rev * gear ratio
+            // kArmServoConstants.kTicksPerUnitDistance = (2048.0 / 360.0) * 240.0; //encoder ticks per rev * gear ratio
+            kArmServoConstants.kRotationsPerUnitDistance = 240.0; 
             kArmServoConstants.kKp = 0.1; // Raw output / raw error
             kArmServoConstants.kKi = 0.0; // Raw output / sum of raw error
             kArmServoConstants.kKd = 0.0; // Raw output / (err - prevErr)
             kArmServoConstants.kKf = 0.0; // Raw output / velocity in ticks/100ms
             kArmServoConstants.kKa = 0.0; // Raw output / accel in (ticks/100ms) /
-            kArmServoConstants.kMaxIntegralAccumulator = 0;
-            kArmServoConstants.kIZone = 0; // Ticks
             kArmServoConstants.kDeadband = 0;
 
             kArmServoConstants.kPositionKp = 0.0;
             kArmServoConstants.kPositionKi = 0;
             kArmServoConstants.kPositionKd = 0.0;
             kArmServoConstants.kPositionKf = 0;
-            kArmServoConstants.kPositionMaxIntegralAccumulator = 0;
-            kArmServoConstants.kPositionIZone = 0; // Ticks
             kArmServoConstants.kPositionDeadband = 0; //
 
             kArmServoConstants.kCruiseVelocity = 25000; // Ticks / 100ms
@@ -44,10 +45,7 @@ public class Constants {
             kArmServoConstants.kRampRate = 0.0; // s
 
             kArmServoConstants.kEnableSupplyCurrentLimit = true;
-            kArmServoConstants.kSupplyContinuousCurrentLimit = 40; // amps
-            kArmServoConstants.kSupplyPeakCurrentLimit = 40; // amps
-            kArmServoConstants.kSupplyPeakCurrentDuration = 10; // milliseconds
-
+            kArmServoConstants.kSupplyCurrentLimit = 40; // amps
             kArmServoConstants.kMaxVoltage = 12.0;
 
             kArmServoConstants.kRecoverPositionOnReset = false;
@@ -64,30 +62,27 @@ public class Constants {
         static {
             kWristServoConstants.kName = "Wrist";
 
-            kWristServoConstants.kMasterConstants.id = Ports.kWrist;
-            kWristServoConstants.kMasterConstants.invert_motor = false;
+            kWristServoConstants.kMasterConstants.id = new CanDeviceId(Ports.kWrist);
+            kWristServoConstants.kMasterConstants.counterClockwisePositive = false;
             kWristServoConstants.kMasterConstants.invert_sensor_phase = false;
 
             kWristServoConstants.kHomePosition = -9.598;
             kWristServoConstants.kMinUnitsLimit = -9.598;
             kWristServoConstants.kMaxUnitsLimit = 113.706;
 
-            kWristServoConstants.kTicksPerUnitDistance = (2048.0 / 360.0) * 40.0; //encoder ticks per rev * gear ratio
+            // kWristServoConstants.kTicksPerUnitDistance = (2048.0 / 360.0) * 40.0; //encoder ticks per rev * gear ratio
+            kWristServoConstants.kRotationsPerUnitDistance = 40.0;
             kWristServoConstants.kKp = 0.1; // Raw output / raw error
             kWristServoConstants.kKi = 0.0; // Raw output / sum of raw error
             kWristServoConstants.kKd = 0.0; // Raw output / (err - prevErr)
             kWristServoConstants.kKf = 0.0; // Raw output / velocity in ticks/100ms
             kWristServoConstants.kKa = 0.0; // Raw output / accel in (ticks/100ms) /
-            kWristServoConstants.kMaxIntegralAccumulator = 0;
-            kWristServoConstants.kIZone = 0; // Ticks
             kWristServoConstants.kDeadband = 0;
 
             kWristServoConstants.kPositionKp = 0.0;
             kWristServoConstants.kPositionKi = 0;
             kWristServoConstants.kPositionKd = 0.0;
             kWristServoConstants.kPositionKf = 0;
-            kWristServoConstants.kPositionMaxIntegralAccumulator = 0;
-            kWristServoConstants.kPositionIZone = 0; // Ticks
             kWristServoConstants.kPositionDeadband = 0; //
 
             kWristServoConstants.kCruiseVelocity = 25000; // Ticks / 100ms
@@ -95,9 +90,7 @@ public class Constants {
             kWristServoConstants.kRampRate = 0.0; // s
 
             kWristServoConstants.kEnableSupplyCurrentLimit = true;
-            kWristServoConstants.kSupplyContinuousCurrentLimit = 40; // amps
-            kWristServoConstants.kSupplyPeakCurrentLimit = 40; // amps
-            kWristServoConstants.kSupplyPeakCurrentDuration = 10; // milliseconds
+            kWristServoConstants.kSupplyCurrentLimit = 40; // amps
 
             kWristServoConstants.kMaxVoltage = 12.0;
 

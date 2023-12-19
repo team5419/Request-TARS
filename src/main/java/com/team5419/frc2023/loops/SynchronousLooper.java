@@ -2,6 +2,8 @@ package com.team5419.frc2023.loops;
 
 import com.team5419.frc2023.SubsystemManager;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,7 +76,7 @@ public class SynchronousLooper implements ILooper {
         auxiliaryLoops.forEach(l -> l.onLoop(timestamp));
         subsystems.onLoop(timestamp);
         subsystems.writePeriodicOutputs();
-        subsystems.outputTelemetry();
+        subsystems.outputTelemetry(false);
     }
 
     public void onAutoLoop(double timestamp) {
@@ -89,7 +91,7 @@ public class SynchronousLooper implements ILooper {
         subsystems.readPeriodicInputs();
         disabledLoops.forEach(l -> l.onLoop(timestamp));
         subsystems.writePeriodicOutputs();
-        subsystems.outputTelemetry();
+        subsystems.outputTelemetry(true);
     }
 
     private enum EnabledMode {

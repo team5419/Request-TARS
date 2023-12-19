@@ -1,15 +1,15 @@
 package com.team254.lib.drivers;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.ControlRequest;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 /**
  * This class is a thin wrapper around the CANTalon that reduces CAN bus / CPU overhead by skipping duplicate set
  * commands. (By default the Talon flushes the Tx buffer on every set call).
  */
 public class LazyTalonFX extends TalonFX {
-    protected double mLastSet = Double.NaN;
-    protected ControlMode mLastControlMode = null;
+    protected ControlRequest mLastControlMode = null;
 
     public LazyTalonFX(int deviceNumber) {
         super(deviceNumber);
@@ -19,16 +19,17 @@ public class LazyTalonFX extends TalonFX {
         super(deviceNumber, canbus);
     }
 
-    public double getLastSet() {
-        return mLastSet;
+    public ControlRequest getLastSet() {
+        return mLastControlMode;
     }
 
     @Override
-    public void set(ControlMode mode, double value) {
-        if (value != mLastSet || mode != mLastControlMode) {
-            mLastSet = value;
+    public StatusCode setControl(ControlRequest mode) {
+        if (mode != mLastControlMode) {
             mLastControlMode = mode;
-            super.set(mode, value);
+            return super.setControl(mode);
         }
+
+        return StatusCode.OK;
     }
 }
